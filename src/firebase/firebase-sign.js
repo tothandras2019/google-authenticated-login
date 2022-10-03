@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 
@@ -23,15 +23,29 @@ const app = initializeApp(firebaseConfig)
 // const analytics = getAnalytics(app)
 
 const provider = new GoogleAuthProvider()
-const auth = getAuth()
+const auth = getAuth(app)
 
 // { 'login_hint': 'user@example.com'}
 //{ prompt: 'select_account' }
 provider.setCustomParameters({ prompt: 'select_account' })
 
-export const SignInUserWithPopUp = () =>
-  signInWithPopup(auth, provider).then((result) => {
-    const credentials = GoogleAuthProvider.credentialFromResult(result)
-    const user = result.user
-    console.log(user)
-  })
+export const m_SignInUserWithPopUp = () =>
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const credentials = GoogleAuthProvider.credentialFromResult(result)
+      const user = result.user
+      console.log(user)
+    })
+    .catch((error) => {
+      console.error('error on create user with google', error)
+    })
+
+export const m_CreateUserWith = () => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user
+    })
+    .catch((error) => {
+      console.error('error on create user with email and password', error)
+    })
+}

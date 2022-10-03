@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { Login } from './components/login-user/login-user-component'
-import { SignInUserWithPopUp } from './firebase/firebase-sign'
+import { m_SignInUserWithPopUp } from './firebase/firebase-sign'
 
 function App() {
   const [userName, setUserName] = useState(null)
@@ -15,7 +15,7 @@ function App() {
   }
 
   const googleSignIn = (event) => {
-    SignInUserWithPopUp()
+    m_SignInUserWithPopUp()
     console.log(event.target)
   }
 
