@@ -20,17 +20,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const analytics = getAnalytics(app)
+// const analytics = getAnalytics(app)
 
 const provider = new GoogleAuthProvider()
 const auth = getAuth()
 
 // { 'login_hint': 'user@example.com'}
 //{ prompt: 'select_account' }
-provider.setCustomParameters({ login_hint: 'user@example.com' })
+provider.setCustomParameters({ prompt: 'select_account' })
 
 export const SignInUserWithPopUp = () =>
   signInWithPopup(auth, provider).then((result) => {
     const credentials = GoogleAuthProvider.credentialFromResult(result)
-    console.log(credentials)
+    const user = result.user
+    console.log(user)
   })
