@@ -1,0 +1,16 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+form .input {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+form .input input {
+  margin-left: 10px;
+  height: 20px;
+}
+form input {
+  width: fit-content;
+}/*# sourceMappingURL=login-user-component.css.map */
