@@ -1,7 +1,7 @@
 import './login-user-component.css'
 
 export const Login = ({ allLoginHandlers, message }) => {
-  const { handleSignIn, handleEmailChange, handlePasswordChange } = allLoginHandlers
+  const { handleSignIn, handleEmailChange, handlePasswordChange, email, password } = allLoginHandlers
 
   return (
     <div className='sign sign-in'>
@@ -9,11 +9,11 @@ export const Login = ({ allLoginHandlers, message }) => {
       <form className='form' onSubmit={handleSignIn}>
         <div className='input'>
           <label htmlFor='email'>your e-mail</label>
-          <input type='email' name='email' onChange={handleEmailChange} />
+          <input type='email' name='email' value={email} onChange={handleEmailChange} />
         </div>
         <div className='input'>
           <label htmlFor='user-password'>Password</label>
-          <input type='password' name='user-password' onChange={handlePasswordChange} />
+          <input type='password' name='user-password' value={password} onChange={handlePasswordChange} />
         </div>
         <input type='submit' value='sing in' />
       </form>

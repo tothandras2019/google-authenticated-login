@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  deleteUser,
 } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
@@ -37,6 +38,19 @@ const auth = getAuth(app)
 //{ prompt: 'select_account' }
 provider.setCustomParameters({ prompt: 'select_account' })
 
+//CHECK USER STATUS
+
+onAuthStateChanged(auth, (user) => {
+  const current = auth.currentUser
+  console.log(current)
+  if (user) {
+    const { displaNamem, uid, email, emailVerified } = user
+    console.log(displaNamem, uid, email, emailVerified)
+    return
+  }
+  console.log('NO USER signed in')
+})
+
 //SIGN IN - login user
 export const m_SignInUserWithPopUp = () =>
   signInWithPopup(auth, provider)
@@ -49,12 +63,12 @@ export const m_SignInUserWithPopUp = () =>
       console.error('error on create user with google', error)
     })
 
-export const m_SignInWithEmailAndPassword = ({ email, password }) => {
-  const auth = getAuth()
-  signInWithEmailAndPassword(auth, email, password)
+export const m_SignInWithEmailAndPassword = async ({ email, password }) => {
+  const auth = await getAuth()
+  await signInWithEmailAndPassword(auth, email, password)
     .then((userCredentials) => {
       const user = userCredentials.user
-      console.log(user)
+      console.log('Sign In:', user)
     })
     .catch((err) => console.error('ERROR on sign in with email and password', err))
 }
@@ -67,24 +81,26 @@ export const m_CreateUserWithEmailAndPassword = ({ email, password }) => {
       if (user) return alert('You have signed in with your e-mail!')
     })
     .catch((error) => {
-      console.error('error on create user with email and password', error)
+      if (error.code === 'auth/email-already-in-use') alert('auth/email-already-in-use', error.code)
     })
 }
 
 //SIGN OUT:
 export const m_SignOutUser = () => {
   signOut(auth)
-    .then(() => alert('You have been signed out'))
+    .then(() => {
+      return alert('You have been signed out')
+    })
     .catch((error) => console.error('error on'))
 }
 
-//CHECK USER STATUS
+//DELETE ACCOUNT
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const uid = user.uid
-    console.log(uid)
-    return
-  }
-  console.log('NO USER signed in')
-})
+export const m_deleteAccount = () => {
+  const user = auth.currentUser
+  deleteUser(user)
+    .then(() => {
+      alert('User removed')
+    })
+    .catch((err) => console.error(err))
+}

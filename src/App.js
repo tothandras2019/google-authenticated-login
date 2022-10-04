@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import logo from './logo.svg'
 import './App.css'
 import { Login } from './components/sign-in_logIn/login-user-component'
 import { SignUp_RegisterUser } from './components/sign-up_register/sign-up-register-component'
-import { m_SignInUserWithPopUp, m_CreateUserWithEmailAndPassword, m_SignInWithEmailAndPassword, m_SignOutUser } from './firebase/firebase-sign'
+import {
+  m_SignInUserWithPopUp,
+  m_CreateUserWithEmailAndPassword,
+  m_SignInWithEmailAndPassword,
+  m_SignOutUser,
+  m_deleteAccount,
+} from './firebase/firebase-sign'
 function App() {
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [msg, setMsg] = useState({ message: '' })
 
   const handleEmailChange = (event) => {
@@ -20,8 +26,8 @@ function App() {
   }
 
   const resetEmailAndPassword = () => {
-    setPassword(null)
-    setEmail(null)
+    setPassword('')
+    setEmail('')
   }
 
   //SIGN METHODS:
@@ -39,13 +45,20 @@ function App() {
   }
 
   const submitSignIn = (event) => {
+    event.preventDefault()
     m_SignInWithEmailAndPassword({ email, password })
     resetEmailAndPassword()
   }
 
   const signOut = (event) => {
-    console.log(event.target)
+    event.preventDefault()
     m_SignOutUser()
+  }
+
+  const deleteUserAccount = (event) => {
+    event.preventDefault()
+    console.log('deleteUserAccount')
+    m_deleteAccount()
   }
   //SIGN METHODS END
 
@@ -55,6 +68,9 @@ function App() {
     handleEmailChange: handleEmailChange,
     handlePasswordChange: handlePasswordChange,
     signOut: signOut,
+    deleteUserAccount: deleteUserAccount,
+    email: email,
+    password: password,
   }
 
   //TODO: implement
@@ -62,6 +78,8 @@ function App() {
     handleSignIn: submitSignIn,
     handleEmailChange: handleEmailChange,
     handlePasswordChange: handlePasswordChange,
+    email: email,
+    password: password,
   }
 
   return (
